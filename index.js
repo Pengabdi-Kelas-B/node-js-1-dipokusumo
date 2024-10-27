@@ -13,6 +13,10 @@ switch (command) {
         app.makeFile()
         break;
 
+    case "ext-sorter":
+        app.extSorter()
+        break;
+
     default:
         throw Error("Invalid command")
 }

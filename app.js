@@ -35,4 +35,31 @@ app.makeFile = () => {
     });
 };
 
+app.extSorter = () => {
+    const sourceFolder = path.join(__dirname, "unorganize_folder");
+  
+    fs.readdir(sourceFolder, (err, files) => {
+      if (err) return console.error("Gagal membaca folder:", err);
+  
+      files.forEach((file) => {
+        const ext = path.extname(file).slice(1);
+        const destinationFolder = path.join(__dirname, ext);
+  
+        if (!fs.existsSync(destinationFolder)) {
+          fs.mkdirSync(destinationFolder);
+        }
+  
+        fs.rename(
+          path.join(sourceFolder, file),
+          path.join(destinationFolder, file),
+          (err) => {
+            if (err) console.error("Gagal memindahkan file:", err);
+          }
+        );
+      });
+  
+      console.log("Berhasil merapikan file berdasarkan ekstensi.");
+    });
+};
+
 module.exports = app
