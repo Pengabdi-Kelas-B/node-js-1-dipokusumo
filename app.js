@@ -1,4 +1,5 @@
 const fs = require("node:fs")
+const path = require("node:path");
 const readline = require('node:readline');
 
 const rl = readline.createInterface({
@@ -8,18 +9,30 @@ const rl = readline.createInterface({
 
 const app = {}
 
-// contoh script pembuatan folder
- app.makeFolder = () => {
-    rl.question("Masukan Nama Folder : ",(folderName) => {
-        fs.mkdir(__dirname + `/${folderName}`,() => {
-            console.log("success created new folder");
-            
-        })
-        rl.close()
-    })
-} 
+app.makeFolder = () => {
+    rl.question("Masukan Nama Folder: ", (folderName) => {
+      const folderPath = path.join(__dirname, folderName);
+      if (fs.existsSync(folderPath)) {
+        console.log("Folder sudah ada.");
+      } else {
+        fs.mkdir(folderPath, (err) => {
+          if (err) console.error(err);
+          else console.log(`Berhasil membuat folder: ${folderName}`);
+        });
+      }
+      rl.close();
+    });
+};
 
-// To Do : lanjutkan pembuatan logic disini 
-
+app.makeFile = () => {
+    rl.question("Masukan Nama File (contoh: catatan.txt): ", (fileName) => {
+      const filePath = path.join(__dirname, fileName);
+      fs.writeFile(filePath, "", (err) => {
+        if (err) console.error(err);
+        else console.log(`Berhasil membuat file: ${fileName}`);
+      });
+      rl.close();
+    });
+};
 
 module.exports = app
