@@ -17,6 +17,10 @@ switch (command) {
         app.extSorter()
         break;
 
+    case "read-folder":
+        app.readFolder()
+        break;
+
     default:
         throw Error("Invalid command")
 }

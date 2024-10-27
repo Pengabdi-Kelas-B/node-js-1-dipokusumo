@@ -62,4 +62,40 @@ app.extSorter = () => {
     });
 };
 
+app.readFolder = () => {
+    rl.question("Masukan Nama Folder: ", (folderName) => {
+      const folderPath = path.join(__dirname, folderName);
+      fs.readdir(folderPath, { withFileTypes: true }, (err, files) => {
+        if (err) return console.error("Gagal membaca folder:", err);
+  
+        const fileDetails = files.map((file) => {
+            const stats = fs.statSync(path.join(folderPath, file.name));
+            const ext = path.extname(file.name).slice(1); // Hilangkan titik dari ekstensi
+          
+            return {
+              namaFile: file.name,
+              ekstensi: ext,
+              jenisFile: getJenisFile(ext),
+              tanggalDibuat: stats.birthtime.toISOString().split("T")[0],
+              ukuranFile: `${(stats.size / 1024).toFixed(2)} KB`,
+            };
+        });
+  
+        console.log(`Isi dari folder ${folderName}:`, fileDetails);
+      });
+      rl.close();
+    });
+};
+
+const getJenisFile = (ext) => {
+    const imageExt = ["jpg", "jpeg", "png", "gif"];
+    const textExt = ["txt", "md"];
+    const videoExt = ["mp4", "avi", "mkv"];
+  
+    if (imageExt.includes(ext)) return "gambar";
+    if (textExt.includes(ext)) return "text";
+    if (videoExt.includes(ext)) return "video";
+    return "lainnya";
+};
+
 module.exports = app
