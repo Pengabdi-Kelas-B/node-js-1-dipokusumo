@@ -87,6 +87,17 @@ app.readFolder = () => {
     });
 };
 
+app.readFile = () => {
+    rl.question("Masukan Nama File: ", (fileName) => {
+      const filePath = path.join(__dirname, fileName);
+      fs.readFile(filePath, "utf8", (err, data) => {
+        if (err) console.error("Gagal membaca file:", err);
+        else console.log(`Isi dari file ${fileName}:\n\n${data}`);
+      });
+      rl.close();
+    });
+};
+
 const getJenisFile = (ext) => {
     const imageExt = ["jpg", "jpeg", "png", "gif"];
     const textExt = ["txt", "md"];
