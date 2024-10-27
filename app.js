@@ -60,6 +60,7 @@ app.extSorter = () => {
   
       console.log("Berhasil merapikan file berdasarkan ekstensi.");
     });
+    rl.close();
 };
 
 app.readFolder = () => {
